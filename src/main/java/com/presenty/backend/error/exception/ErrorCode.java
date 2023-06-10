@@ -3,8 +3,7 @@ package com.presenty.backend.error.exception;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import static com.nimbusds.oauth2.sdk.http.HTTPResponse.*;
-import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+import static jakarta.servlet.http.HttpServletResponse.*;
 
 @Getter
 @RequiredArgsConstructor

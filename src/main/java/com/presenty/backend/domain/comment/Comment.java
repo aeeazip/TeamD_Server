@@ -1,0 +1,28 @@
+package com.presenty.backend.domain.comment;
+
+import com.presenty.backend.domain.core.BaseEntity;
+import com.presenty.backend.domain.member.Member;
+import com.presenty.backend.domain.paper.Paper;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "comment")
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Comment extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "content", length = 255, nullable = false)
+    private String content;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "paper_id")
+    private Paper paper;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+}

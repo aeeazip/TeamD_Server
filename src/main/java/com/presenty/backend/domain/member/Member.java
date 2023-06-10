@@ -1,6 +1,7 @@
 package com.presenty.backend.domain.member;
 
 import com.presenty.backend.domain.core.BaseTimeEntity;
+import com.presenty.backend.domain.image.Image;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -8,7 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "member",
@@ -33,6 +36,17 @@ public class Member extends BaseTimeEntity {
      */
     @Column(name = "password")
     private String password;
+
+    @Column(name = "birthday", nullable = true)
+    private LocalDate birthday;
+
+    @Column(name = "mbti", nullable = true)
+    @Enumerated(EnumType.STRING)
+    private Mbti mbti;
+
+    @OneToOne
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     @Column(name = "refresh_token", nullable = false)
     private String refreshToken;

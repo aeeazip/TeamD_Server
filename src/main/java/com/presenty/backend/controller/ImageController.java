@@ -29,9 +29,11 @@ public class ImageController {
     }
 
     @GetMapping("/image/{imageId}")
-    public Resource getLocalImage(@PathVariable long imageId) throws MalformedURLException {
+    public ResponseEntity<Resource> getLocalImage(@PathVariable long imageId) throws MalformedURLException {
         ImageDto image = imageService.get(imageId);
-        return new UrlResource("file:" + image.getUrl());
+        System.out.println("==>" + image.getUrl());
+        UrlResource resource = new UrlResource("file:" + image.getUrl());
+        return ResponseEntity.ok(resource);
     }
 
     private void validateMultipartFileImage(MultipartFile image) {

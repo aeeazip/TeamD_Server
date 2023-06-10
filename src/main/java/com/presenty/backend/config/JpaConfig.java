@@ -11,8 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
-import static java.util.Objects.nonNull;
-
 @Configuration
 @EnableJpaAuditing
 @RequiredArgsConstructor
@@ -24,11 +22,10 @@ public class JpaConfig {
     @Bean
     public AuditorAware<Long> auditorAware() {
 
-        return () -> {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Optional<Long> memberIdOptional = (nonNull(authentication) && authentication.isAuthenticated())
-                    ? Optional.of(memberService.getMemberId(authentication.getName())) : Optional.empty();
-            return memberIdOptional;
-        };
+        return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                    .filter(Authentication::isAuthenticated)
+                    .map(Authentication::getName)
+                    .filter(name -> !"anonymousUser".equals(name))
+                    .map(memberService::getMemberId);
     }
 }

@@ -4,6 +4,7 @@ import com.presenty.backend.domain.core.BaseTimeEntity;
 import com.presenty.backend.domain.wishlist.Wishlist;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,13 +21,21 @@ public class Item extends BaseTimeEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "reception", nullable = false)
-    private boolean reception;
-
-    @Column(name = "oneoff", nullable = false)
-    private boolean oneoff;
+    @Column(name = "oneoff", columnDefinition = "INT", nullable = false)
+    private int oneoff;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "wishlist_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Wishlist wishlist;
+
+    @Builder
+    public Item(String name, int oneoff, Wishlist wishlist){
+        this.name = name;
+        this.oneoff = oneoff;
+        this.wishlist = wishlist;
+    }
+
+    public void update(int oneoff) {
+        this.oneoff = oneoff;
+    }
 }

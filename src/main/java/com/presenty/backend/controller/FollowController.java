@@ -19,7 +19,7 @@ public class FollowController {
         return followService.applyFollow(memberId, followingId);
     }
 
-    @GetMapping("/follow/{followerId}")
+    @GetMapping("/{followerId}")
     public List<FollowDto> getFollowing(@PathVariable Long followerId) {
         List<FollowDto> getFollowingList = followService.getFollowing(followerId);
         return getFollowingList;

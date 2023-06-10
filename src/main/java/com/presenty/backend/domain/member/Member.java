@@ -1,5 +1,6 @@
 package com.presenty.backend.domain.member;
 
+import com.presenty.backend.domain.core.BaseTimeEntity;
 import com.presenty.backend.domain.image.Image;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -14,12 +15,12 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "member",
         uniqueConstraints = {
-            @UniqueConstraint(name = "UK_member_username", columnNames = "username")
+                @UniqueConstraint(name = "UK_member_username", columnNames = "username")
         }
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends BaseEntity {
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

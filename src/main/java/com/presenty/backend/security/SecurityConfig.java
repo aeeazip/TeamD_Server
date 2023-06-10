@@ -2,13 +2,13 @@ package com.presenty.backend.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.presenty.backend.security.jwt.*;
-import com.presenty.backend.security.oauth2.OAuth2AuthenticationSuccessHandlerCustom;
-import com.presenty.backend.security.oauth2.OAuth2UserServiceCustom;
 import com.presenty.backend.service.MemberService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,21 +23,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private static final String[] GET_PERMITTED_URLS = {
-            "/code",
     };
 
     private static final String[] POST_PERMITTED_URLS = {
-            "/login/oauth2/token/{registrationId}",
-            "/login/reissue"
+            "/login/reissue",
+            "/signup"
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity httpSecurity,
-            OAuth2UserServiceCustom oAuth2UserService,
-            OAuth2AuthenticationSuccessHandlerCustom oAuth2AuthenticationSuccessHandler,
             JwtAuthenticationCheckFilter jwtAuthenticationCheckFilter,
             JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+            JwtAuthenticationFilter jwtAuthenticationFilter,
             JwtLogoutHandler jwtLogoutHandler,
             JwtLogoutSuccessHandler jwtLogoutSuccessHandler)
             throws Exception {
@@ -50,6 +48,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
 
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(jwtAuthenticationCheckFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(config -> config
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -60,12 +59,6 @@ public class SecurityConfig {
                         .logoutSuccessHandler(jwtLogoutSuccessHandler)
                 )
 
-                .oauth2Login(oauth2 -> oauth2
-                        .userInfoEndpoint(config -> config
-                                .userService(oAuth2UserService)
-                        )
-                        .successHandler(oAuth2AuthenticationSuccessHandler)
-                )
 
                 .authorizeHttpRequests(antz -> antz
                                 .requestMatchers(HttpMethod.GET, GET_PERMITTED_URLS).permitAll()
@@ -79,6 +72,12 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
@@ -97,14 +96,21 @@ public class SecurityConfig {
                 jwtTokenProvider);
     }
 
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(
+            JwtTokenProvider jwtTokenProvider, MemberService memberService,
+            ObjectMapper objectMapper, AuthenticationManager authenticationManager) {
+        return new JwtAuthenticationFilter(jwtTokenProvider,memberService, authenticationManager, objectMapper);
+    }
+
     @Bean
     public JwtLogoutHandler jwtLogoutHandler(JwtTokenProvider jwtTokenProvider, MemberService memberService) {
         return new JwtLogoutHandler(jwtTokenProvider, memberService);
     }
 
     @Bean
-    public JwtLogoutSuccessHandler jwtLogoutSuccessHandler(
-            ObjectMapper objectMapper, MemberService accountService, JwtTokenProvider jwtTokenProvider) {
+    public JwtLogoutSuccessHandler jwtLogoutSuccessHandler() {
         return new JwtLogoutSuccessHandler();
     }
 

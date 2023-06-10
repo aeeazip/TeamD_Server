@@ -11,7 +11,6 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "member",
@@ -29,22 +28,20 @@ public class Member extends BaseTimeEntity {
     private Long id;
 
     @Column(name = "username", nullable = false)
+
     private String username;
 
-    /**
-     * OAuth2 로그인의 경우 password 는 null 로 일반적인 로그인 불가능
-     */
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "birthday", nullable = true)
+    @Column(name = "birthday", nullable = false)
     private LocalDate birthday;
 
-    @Column(name = "mbti", nullable = true)
+    @Column(name = "mbti", nullable = false)
     @Enumerated(EnumType.STRING)
     private Mbti mbti;
 
-    @OneToOne(optional = false)
+    @OneToOne
     @JoinColumn(name = "image_id")
     private Image image;
 
@@ -57,9 +54,15 @@ public class Member extends BaseTimeEntity {
     @Builder
     private Member(
             String username,
-            String password) {
+            String password,
+            LocalDate birthday,
+            Image image,
+            Mbti mbti) {
         this.username = username;
         this.password = password;
+        this.birthday = birthday;
+        this.image = image;
+        this.mbti = mbti;
         this.refreshToken = "";
         this.refreshTokenExpiresAt = LocalDateTime.now();
     }

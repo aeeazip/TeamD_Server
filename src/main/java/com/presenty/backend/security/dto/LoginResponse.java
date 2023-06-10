@@ -1,4 +1,4 @@
-package com.presenty.backend.security.response;
+package com.presenty.backend.security.dto;
 
 import lombok.AccessLevel;
 import lombok.Builder;

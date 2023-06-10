@@ -35,9 +35,10 @@ public class ItemService {
 
         if(getItem.getOneoff() == 1)
             getItem.update(0);
-        else
+        else if(getItem.getOneoff() > 1)
             getItem.update(getItem.getOneoff()-1);
 
+        itemRepository.save(getItem);
         return 1;
     }
 }

@@ -18,18 +18,23 @@ public class Paper extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "paper_id")
     private Long id;
+
     @Column(name = "content", length = 255, nullable = false)
     private String content;
+
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "item_id")
     private Item item;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Member member1;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Member member2;
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "taker_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Member taker;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "giver_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Member giver;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "wishlist_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Wishlist wishlist;
 }

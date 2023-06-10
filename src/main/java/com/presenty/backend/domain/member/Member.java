@@ -34,7 +34,7 @@ public class Member extends BaseTimeEntity {
     /**
      * OAuth2 로그인의 경우 password 는 null 로 일반적인 로그인 불가능
      */
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "birthday", nullable = true)
@@ -44,7 +44,7 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Mbti mbti;
 
-    @OneToOne
+    @OneToOne(optional = false)
     @JoinColumn(name = "image_id")
     private Image image;
 

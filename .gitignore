@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Macbook ###
+.DS_Store
+
+### Application ###
+localimage

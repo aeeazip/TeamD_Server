@@ -3,7 +3,8 @@ package com.presenty.backend.error.exception;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import static jakarta.servlet.http.HttpServletResponse.*;
+import static com.nimbusds.oauth2.sdk.http.HTTPResponse.*;
+import static jakarta.servlet.http.HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
 @Getter
 @RequiredArgsConstructor
@@ -17,6 +18,8 @@ public enum ErrorCode {
 
     ENTITY_NOT_FOUND(SC_NOT_FOUND, "존재하지 않는 자원입니다."),
     ENTITY_ACCESS_DENIED(SC_FORBIDDEN, "접근이 허용되지 않는 리소스입니다."),
+
+    INVALID_IMAGE(SC_BAD_REQUEST, "잘못된 이미지를 업로드하였습니다."),
     ;
 
     private final int status;

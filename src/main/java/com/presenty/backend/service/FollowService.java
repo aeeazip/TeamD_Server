@@ -42,13 +42,15 @@ public class FollowService {
     }
 
     public List<FollowDto> getFollowing(Long followerId) {
-        Optional<List<Follow>> followingList = followRepository.findByFollowerId(followerId);
+        Member follower = memberRepository.findById(followerId)
+                .orElseThrow(() -> new EntityNotFoundException("Account.member_id=" + followerId));
+        List<Follow> followingList = followRepository.findAllByFollower(follower);
 
-        if(!followingList.isPresent())
+        if(followingList.isEmpty())
             throw new EntityNotFoundException("현재 팔로우하고 있는 멤버가 없습니다.");
 
         List<FollowDto> followDtoList = new ArrayList<FollowDto>();
-        for(Follow f : followingList.get()) {
+        for(Follow f : followingList) {
             followDtoList.add(new FollowDto(f));
         }
         return followDtoList;

@@ -5,6 +5,7 @@ import com.presenty.backend.service.ChatGptService;
 import com.presenty.backend.service.WishlistService;
 import com.presenty.backend.service.dto.CreateResult;
 import com.presenty.backend.service.dto.WishlistCreateRequest;
+import com.presenty.backend.service.dto.WishlistDto;
 import com.presenty.backend.service.dto.WishlistRecommendRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -29,5 +30,10 @@ public class WishlistController {
     public CreateResult<Long> createWishlist(
             @RequestBody @Validated WishlistCreateRequest request, @LoginMemberId Long memberId) {
         return wishlistService.create(request, memberId);
+    }
+
+    @GetMapping("/wishlist/{memberId}")
+    public List<WishlistDto> getWishlists(@PathVariable Long memberId) {
+        return wishlistService.getWishlists(memberId);
     }
 }

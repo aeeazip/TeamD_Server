@@ -1,6 +1,7 @@
 package com.presenty.backend.controller;
 
 import com.presenty.backend.service.ChatGptService;
+import com.presenty.backend.service.ItemService;
 import com.presenty.backend.service.dto.PaperReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ public class PaperController {
     private final PaperService paperService;
 
     private final ChatGptService chatGptService;
+    private final ItemService itemService;
 
     // mbti 메시지 추천 결과 제공
     @GetMapping("/recommend/{takerId}")
@@ -27,6 +29,7 @@ public class PaperController {
     @PostMapping("/{wishlistId}/register/{giverId}")
     public PaperResDto createPaper(@PathVariable Long wishlistId, @PathVariable Long giverId, @RequestBody PaperReqDto paperReqDto) {
         PaperResDto newPaper = paperService.createPaper(wishlistId, giverId, paperReqDto);
+        itemService.deleteItem(newPaper.getWishlistId(), newPaper.getItemId());
         return newPaper;
     }
 

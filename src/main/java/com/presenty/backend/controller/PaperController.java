@@ -1,5 +1,6 @@
 package com.presenty.backend.controller;
 
+import com.presenty.backend.service.ChatGptService;
 import com.presenty.backend.service.dto.PaperReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,13 @@ import java.util.List;
 public class PaperController {
     private final PaperService paperService;
 
+    private final ChatGptService chatGptService;
+
     // mbti 메시지 추천 결과 제공
+    @GetMapping("/recommend/{takerId}")
+    public List<String> recommendPaper(@PathVariable Long takerId) {
+        return chatGptService.recommendPaper(takerId);
+    }
 
 
     // 롤링 페이퍼 등록

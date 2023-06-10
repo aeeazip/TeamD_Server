@@ -23,9 +23,12 @@ public class JpaConfig {
 
     @Bean
     public AuditorAware<Long> auditorAware() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Optional<Long> memberIdOptional = (nonNull(authentication) && authentication.isAuthenticated())
-                ? Optional.of(memberService.getMemberId(authentication.getName())) : Optional.empty();
-        return () -> memberIdOptional;
+
+        return () -> {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Optional<Long> memberIdOptional = (nonNull(authentication) && authentication.isAuthenticated())
+                    ? Optional.of(memberService.getMemberId(authentication.getName())) : Optional.empty();
+            return memberIdOptional;
+        };
     }
 }

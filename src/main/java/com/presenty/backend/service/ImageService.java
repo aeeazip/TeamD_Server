@@ -60,10 +60,10 @@ public class ImageService {
         return originalFilename.substring(pos + 1);
     }
 
-    public boolean isNotOwnedByMember(Long memberId, Long imageId) {
-        Image image = getImageById(imageId);
-        return !Objects.equals(image.getCreatedBy(), memberId);
-    }
+//    public boolean isNotOwnedByMember(Long memberId, Long imageId) {
+//        Image image = getImageById(imageId);
+//        return !Objects.equals(image.getCreatedBy(), memberId);
+//    }
 
     private Image getImageById(Long imageId) {
         return imageRepository.findById(imageId)

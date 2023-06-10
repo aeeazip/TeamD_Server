@@ -1,7 +1,5 @@
 package com.presenty.backend.domain.member;
 
-import com.presenty.backend.domain.core.BaseEntity;
-import com.presenty.backend.domain.core.BaseTimeEntity;
 import com.presenty.backend.domain.image.Image;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

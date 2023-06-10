@@ -1,6 +1,6 @@
 package com.presenty.backend.domain.comment;
 
-import com.presenty.backend.domain.core.BaseEntity;
+import com.presenty.backend.domain.core.BaseTimeEntity;
 import com.presenty.backend.domain.member.Member;
 import com.presenty.backend.domain.paper.Paper;
 import jakarta.persistence.*;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "comment")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Comment extends BaseEntity {
+public class Comment extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,5 +27,4 @@ public class Comment extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "member_id")
     private Member member;
-
 }

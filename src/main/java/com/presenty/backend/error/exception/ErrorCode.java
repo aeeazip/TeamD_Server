@@ -19,6 +19,8 @@ public enum ErrorCode {
     ENTITY_ACCESS_DENIED(SC_FORBIDDEN, "접근이 허용되지 않는 리소스입니다."),
 
     INVALID_IMAGE(SC_BAD_REQUEST, "잘못된 이미지를 업로드하였습니다."),
+
+    DUPLICATED_FOLLOWINGS(SC_BAD_REQUEST, "이미 팔로우하고 있습니다."),
     ;
 
     private final int status;

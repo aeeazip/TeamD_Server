@@ -1,6 +1,5 @@
 package com.presenty.backend.domain.member;
 
-import com.presenty.backend.domain.core.BaseTimeEntity;
 import com.presenty.backend.domain.image.Image;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -20,7 +19,7 @@ import java.time.LocalDateTime;
 )
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends BaseTimeEntity {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

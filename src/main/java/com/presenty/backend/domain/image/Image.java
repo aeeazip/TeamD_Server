@@ -1,6 +1,6 @@
 package com.presenty.backend.domain.image;
 
-import com.presenty.backend.domain.core.BaseEntity;
+import com.presenty.backend.domain.core.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "images")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Image extends BaseEntity {
+public class Image extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

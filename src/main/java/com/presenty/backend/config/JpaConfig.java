@@ -16,16 +16,4 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JpaConfig {
 
-    private final MemberService memberService;
-
-
-    @Bean
-    public AuditorAware<Long> auditorAware() {
-
-        return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
-                    .filter(Authentication::isAuthenticated)
-                    .map(Authentication::getName)
-                    .filter(name -> !"anonymousUser".equals(name))
-                    .map(memberService::getMemberId);
-    }
 }

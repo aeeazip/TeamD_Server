@@ -1,6 +1,6 @@
 package com.presenty.backend.domain.wishlist;
 
-import com.presenty.backend.domain.core.BaseEntity;
+import com.presenty.backend.domain.core.BaseTimeEntity;
 import com.presenty.backend.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "wishlist")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Wishlist extends BaseEntity {
+public class Wishlist extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "wishlist_id")

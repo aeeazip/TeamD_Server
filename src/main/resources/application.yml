@@ -17,9 +17,9 @@ spring:
         max-page-size: 100
 
   datasource:
-    url: jdbc:mysql://localhost:3306/practice?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/mydb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-    password:
+    password: codnjs08!
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

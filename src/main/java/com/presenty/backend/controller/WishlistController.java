@@ -32,7 +32,7 @@ public class WishlistController {
         return wishlistService.create(request, memberId);
     }
 
-    @GetMapping("/wishlist/{memberId}")
+    @GetMapping("/wishlists/{memberId}")
     public List<WishlistDto> getWishlists(@PathVariable Long memberId) {
         return wishlistService.getWishlists(memberId);
     }

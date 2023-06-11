@@ -7,11 +7,14 @@ import com.presenty.backend.service.dto.ImageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.net.MalformedURLException;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Objects;
 
 @RestController
@@ -29,11 +32,13 @@ public class ImageController {
     }
 
     @GetMapping("/image/{imageId}")
-    public ResponseEntity<Resource> getLocalImage(@PathVariable long imageId) throws MalformedURLException {
+    public ResponseEntity<Resource> getLocalImage(@PathVariable long imageId) throws IOException {
         ImageDto image = imageService.get(imageId);
-        System.out.println("==>" + image.getUrl());
         UrlResource resource = new UrlResource("file:" + image.getUrl());
-        return ResponseEntity.ok(resource);
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.CONTENT_TYPE, Files.probeContentType(new File(image.getStoredName()).toPath()))
+                .body(resource);
     }
 
     private void validateMultipartFileImage(MultipartFile image) {

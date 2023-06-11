@@ -57,7 +57,7 @@ public class ChatGptService {
                 .collect(Collectors.joining(", "));
         String choice = request.getChoice().getTitle();
         return interests + "에 관심이 있는 사람들을 위한 " +
-                tags + " 느낌의 " + choice + "선물 3가지만 단어로 추천해줘";
+                tags + " 느낌의 " + choice + "선물 3가지만 설명은 없이 간단한 단어로 추천해줘.";
     }
 
     public List<String> recommendPaper(Long takerId) {

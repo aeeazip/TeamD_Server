@@ -4,11 +4,12 @@ import com.presenty.backend.domain.follow.Follow;
 import com.presenty.backend.domain.follow.repository.FollowRepository;
 import com.presenty.backend.domain.member.Member;
 import com.presenty.backend.domain.member.repository.MemberRepository;
-import com.presenty.backend.error.exception.DuplicateFollowingException;
+import com.presenty.backend.error.exception.DuplicatedFollowingException;
 import com.presenty.backend.error.exception.EntityNotFoundException;
 import com.presenty.backend.service.dto.FollowDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +22,12 @@ public class FollowService {
 
     private final MemberRepository memberRepository;
 
-    public int applyFollow(Long memberId, Long followingId) {
+    @Transactional
+    public FollowDto applyFollow(Long memberId, Long followingId) {
         Optional<Follow> getFollow = followRepository.checkDuplicated(memberId, followingId);
 
         if(getFollow.isPresent())
-            throw new DuplicateFollowingException("팔로우 신청에 실패했습니다.");
+            throw new DuplicatedFollowingException("팔로우 신청에 실패했습니다.");
 
         Member follower = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("Member.member_id=" + memberId));
@@ -37,8 +39,7 @@ public class FollowService {
                 .follower(follower)
                 .build();
 
-        followRepository.save(newFollow);
-        return 1;
+        return new FollowDto(followRepository.save(newFollow));
     }
 
     public List<FollowDto> getFollowing(Long followerId) {
@@ -49,10 +50,12 @@ public class FollowService {
         if(followingList.isEmpty())
             throw new EntityNotFoundException("현재 팔로우하고 있는 멤버가 없습니다.");
 
-        List<FollowDto> followDtoList = new ArrayList<FollowDto>();
-        for(Follow f : followingList) {
-            followDtoList.add(new FollowDto(f));
-        }
-        return followDtoList;
+        return followingList.stream()
+                .map(follow -> FollowDto.builder()
+                        .id(follow.getId())
+                        .followerId(follow.getFollower().getId())
+                        .followingId(follow.getFollowing().getId())
+                        .build()
+                ).toList();
     }
 }

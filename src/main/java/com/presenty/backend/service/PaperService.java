@@ -11,10 +11,12 @@ import com.presenty.backend.domain.item.Item;
 import com.presenty.backend.error.exception.EntityNotFoundException;
 import com.presenty.backend.service.dto.PaperReqDto;
 import com.presenty.backend.service.dto.PaperResDto;
+import com.presenty.backend.service.dto.WishlistDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,12 +53,21 @@ public class PaperService {
     }
 
     public List<PaperResDto> getPapers(Long wishlistId) {
-        List<Paper> getPapers = paperRepository.findByWishlistId(wishlistId);
-        List<PaperResDto> paperResDto = new ArrayList<PaperResDto>();
+        Wishlist wishlist = wishlistRepository.findById(wishlistId)
+                .orElseThrow(() -> new EntityNotFoundException("Wishlist.wishlist_id=" + wishlistId));
+        List<Paper> getPapers = paperRepository.findAllByWishlist(wishlist);
 
-        for(Paper p : getPapers) {
-            paperResDto.add(new PaperResDto(p));
-        }
-        return paperResDto;
+        return getPapers.stream()
+                .map(paper -> PaperResDto.builder()
+                        .id(paper.getId())
+                        .takerId(paper.getTaker().getId())
+                        .giverId(paper.getGiver().getId())
+                        .content(paper.getContent())
+                        .createdAt(paper.getCreatedAt())
+                        .updatedAt(paper.getLastModifiedAt())
+                        .wishlistId(paper.getWishlist().getId())
+                        .itemId(paper.getItem().getId())
+                        .build()
+                ).toList();
     }
 }

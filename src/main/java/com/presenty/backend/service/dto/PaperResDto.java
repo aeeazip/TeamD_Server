@@ -1,15 +1,12 @@
 package com.presenty.backend.service.dto;
 
 import com.presenty.backend.domain.paper.Paper;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Data
+@Builder
 public class PaperResDto {
     private Long id;
     private Long takerId;
@@ -20,7 +17,6 @@ public class PaperResDto {
     private Long wishlistId;
     private Long itemId;
 
-    @Builder
     public PaperResDto(Paper paper) {
         this.id = paper.getId();
         this.takerId = paper.getTaker().getId();

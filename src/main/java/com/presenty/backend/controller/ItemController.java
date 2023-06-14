@@ -21,10 +21,15 @@ public class ItemController {
         return getItem;
     }
 
-    // Item 개수 변경
+    // Item 개수 변경 (선물받은 경우)
     @PostMapping("/{itemId}")
-    public int deleteItem(@PathVariable Long wishlistId, @PathVariable Long itemId) {
-        return itemService.deleteItem(wishlistId, itemId);
+    public ItemResDto updateItemOneoff(@PathVariable Long wishlistId, @PathVariable Long itemId) {
+        return itemService.updateItemOneoff(wishlistId, itemId);
     }
 
+    // Taker가 위시리스트에서 Item 삭제
+    @DeleteMapping("/{itemId}")
+    public String deleteItem(@PathVariable Long wishlistId, @PathVariable Long itemId) {
+        return itemService.deleteItem(wishlistId, itemId);
+    }
 }

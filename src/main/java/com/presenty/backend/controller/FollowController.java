@@ -15,10 +15,11 @@ public class FollowController {
 
     // 팔로우 신청
     @PutMapping("/{memberId}/to/{followingId}")
-    public int applyFollow(@PathVariable Long memberId, @PathVariable Long followingId) {
+    public FollowDto applyFollow(@PathVariable Long memberId, @PathVariable Long followingId) {
         return followService.applyFollow(memberId, followingId);
     }
 
+    // 팔로잉 조회
     @GetMapping("/{followerId}")
     public List<FollowDto> getFollowing(@PathVariable Long followerId) {
         List<FollowDto> getFollowingList = followService.getFollowing(followerId);

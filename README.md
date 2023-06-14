@@ -1,6 +1,8 @@
 # 🎁 Presenty 🎁
 ### 개인 취향 맞춤 선물 추천 위시리스트 서비스
 
+<br>
+
 ## 1️⃣ 서비스 소개
 ![image](https://github.com/aeeazip/TeamD_Server/assets/97737822/759a4b07-9d71-47f3-badb-8ac3b144ebbd)
 
